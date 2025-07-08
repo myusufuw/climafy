@@ -1,3 +1,4 @@
+import CurrentWeather from '@/components/current-weather'
 import WeatherSkeleton from '@/components/loading-skeleton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -81,7 +82,7 @@ const WeatherDashboard = () => {
 
   const locationName =
     locationData && locationData?.length > 0 ? locationData[0] : null
-  console.log(locationName)
+
   if (weatherError || forecastError) {
     return (
       <Alert variant='destructive'>
@@ -121,7 +122,24 @@ const WeatherDashboard = () => {
         </Button>
       </div>
 
-      {/* CURRENT AND HOURLY WEATHER */}
+      {/* CONTENTS */}
+      <div className='grid gap-6'>
+        <div className='flex flex-col lg:flex-row gap-4'>
+          {/* CURRENT WEATHER */}
+          <CurrentWeather data={wetaherData} locationName={locationName} />
+
+          {/* HOURLY TEMPERATURE */}
+          {/* <HourlyTemperature data={forecastQuery.data} /> */}
+        </div>
+
+        <div className='grid gap-6 md:grid-cols-2 items-start'>
+          {/* WEATHER DETAILS */}
+          {/* <WeatherDetails data={weatherQuery.data} /> */}
+
+          {/* WEATHER FORECAST */}
+          {/* <WeatherForecast data={forecastQuery.data} /> */}
+        </div>
+      </div>
     </div>
   )
 }
