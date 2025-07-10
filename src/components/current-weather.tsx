@@ -1,14 +1,7 @@
 import type { GeocodingResponse, WeatherData } from '@/api/types'
-import { Card, CardContent } from './ui/card'
-import {
-  ArrowDown,
-  ArrowUp,
-  Droplets,
-  Sunrise,
-  Sunset,
-  Wind
-} from 'lucide-react'
 import clsx from 'clsx'
+import { ArrowDown, ArrowUp, Droplets, Wind } from 'lucide-react'
+import { Card, CardContent } from './ui/card'
 
 type CurrentWeatherProps = {
   data: WeatherData
@@ -19,10 +12,8 @@ const CurrentWeather = ({ data, locationName }: CurrentWeatherProps) => {
   const {
     weather: [currentWeather],
     main: { temp, feels_like, humidity, temp_max, temp_min },
-    wind: { speed },
-    sys: { sunrise, sunset }
+    wind: { speed }
   } = data
-  console.log(data)
 
   const formatTemp = (temp: number) => `${Math.round(temp)}°`
 
@@ -38,32 +29,12 @@ const CurrentWeather = ({ data, locationName }: CurrentWeatherProps) => {
       title: 'Wind Speed',
       value: `${speed} m/s`,
       color: 'text-blue-500'
-    },
-    {
-      icon: Sunrise,
-      title: 'Sunrise',
-      value: new Date(sunrise * 1000).toLocaleString('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: false
-      }),
-      color: 'text-yellow-500'
-    },
-    {
-      icon: Sunset,
-      title: 'Sunset',
-      value: new Date(sunset * 1000).toLocaleString('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: false
-      }),
-      color: 'text-orange-500'
     }
   ]
 
   return (
-    <Card className='overflow-hidden bg-white/50 dark:bg-black/20 backdrop-blur-lg border border-white/20 dark:border-white/10 shadow-md'>
-      <CardContent className='p-6'>
+    <Card className='overflow-hidden '>
+      <CardContent className=''>
         <div className='grid gap-6 md:grid-cols-2'>
           {/* LEFT CONTENT */}
           <div className='space-y-4'>
