@@ -22,19 +22,19 @@ const WeatherDetails = ({ data }: { data: WeatherData }) => {
       title: 'Sunrise',
       value: formatTime(sys.sunrise),
       icon: Sunrise,
-      color: 'text-orange-500'
+      color: 'text-yellow-500'
     },
     {
       title: 'Sunset',
       value: formatTime(sys.sunset),
       icon: Sunset,
-      color: 'text-blue-500'
+      color: 'text-orange-500'
     },
     {
       title: 'Wind Direction',
       value: `${getWindDirection(wind.deg)} (${wind.deg}°)`,
       icon: Compass,
-      color: 'text-green-500'
+      color: 'text-blue-500'
     },
     {
       title: 'Pressure',
@@ -54,7 +54,7 @@ const WeatherDetails = ({ data }: { data: WeatherData }) => {
           {details.map((detail) => (
             <div
               key={detail.title}
-              className='flex items-center gap-3 rounded-lg border p-4'
+              className='flex items-center gap-3 rounded-lg border p-4 bg-white/50 dark:bg-black/10'
             >
               <detail.icon className={`h-5 w-5 ${detail.color}`} />
               <div>
