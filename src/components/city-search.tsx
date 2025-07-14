@@ -1,6 +1,10 @@
-import { Loader2, Search } from 'lucide-react'
-import { Button } from './ui/button'
+import { useSearchHistory } from '@/hooks/use-search-history'
+import { useLocationSearch } from '@/hooks/use-weather'
+import { Clock, Loader2, Search, XCircle } from 'lucide-react'
+import moment from 'moment'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Button } from './ui/button'
 import {
   CommandDialog,
   CommandEmpty,
@@ -10,8 +14,6 @@ import {
   CommandList,
   CommandSeparator
 } from './ui/command'
-import { useLocationSearch } from '@/hooks/use-weather'
-import { useNavigate } from 'react-router-dom'
 
 const CitySearch = () => {
   const navigate = useNavigate()
@@ -19,9 +21,18 @@ const CitySearch = () => {
   const [query, setQuery] = useState('')
 
   const { data: locations, isLoading } = useLocationSearch(query)
+  const { history, addToHistory, clearHistory } = useSearchHistory()
 
   const handleSelect = (cityData: string) => {
     const [lat, lon, name, country] = cityData.split('|')
+
+    addToHistory.mutate({
+      query,
+      lat: parseFloat(lat),
+      lon: parseFloat(lon),
+      name,
+      country
+    })
 
     setOpenDialogSearch(false)
     navigate(`/city/${name}?lat=${lat}&lon=${lon}`)
@@ -53,11 +64,48 @@ const CitySearch = () => {
             <CommandItem>Calendar</CommandItem>
           </CommandGroup>
 
-          <CommandSeparator />
           {/* RECENTS */}
-          <CommandGroup heading='Recents'>
-            <CommandItem>Calendar</CommandItem>
-          </CommandGroup>
+          {history.length > 0 && (
+            <>
+              <CommandSeparator />
+              <CommandGroup>
+                <div className='flex items-center justify-between px-2 my-2'>
+                  <p className='text-xs text-muted-foreground'>
+                    Recent Searches
+                  </p>
+                  <Button
+                    variant='ghost'
+                    size='sm'
+                    onClick={() => clearHistory.mutate()}
+                  >
+                    <XCircle className='h-4 w-4' />
+                    Clear
+                  </Button>
+                </div>
+                {history.map((item) => (
+                  <CommandItem
+                    key={item.id}
+                    value={`${item.lat}|${item.lon}|${item.name}|${item.country}`}
+                    onSelect={handleSelect}
+                  >
+                    <Clock className='mr-2 h-4 w-4 text-muted-foreground' />
+                    <span>{item.name}</span>
+                    {item.state && (
+                      <span className='text-sm text-muted-foreground'>
+                        , {item.state}
+                      </span>
+                    )}
+                    <span className='text-sm text-muted-foreground'>
+                      , {item.country}
+                    </span>
+                    <span className='ml-auto text-xs text-muted-foreground'>
+                      {moment(item.searchedAt).format('MMM DD, hh:mm A')}
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </>
+          )}
 
           <CommandSeparator />
 
