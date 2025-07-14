@@ -53,5 +53,13 @@ export const weatherAPI = {
       limit: '1'
     })
     return fetchData<GeocodingResponse[]>(url)
+  },
+
+  async searchLocations(query: string): Promise<GeocodingResponse[]> {
+    const url = createUrl(`${API_CONFIG.GEO}/direct`, {
+      q: query,
+      limit: '5'
+    })
+    return fetchData<GeocodingResponse[]>(url)
   }
 }
