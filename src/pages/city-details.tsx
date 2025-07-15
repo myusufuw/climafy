@@ -17,19 +17,11 @@ const CityDetails = () => {
 
   const coordinates = { lat, lon }
 
-  const {
-    data: wetaherData,
-    refetch: refetchWeather,
-    error: weatherError,
-    isFetching: weatherIsFetching
-  } = useWeatherQuery(coordinates)
+  const { data: wetaherData, error: weatherError } =
+    useWeatherQuery(coordinates)
 
-  const {
-    data: forecastData,
-    refetch: refetchForecast,
-    error: forecastError,
-    isFetching: forecastIsFetching
-  } = useForecastQuery(coordinates)
+  const { data: forecastData, error: forecastError } =
+    useForecastQuery(coordinates)
 
   if (weatherError || forecastError) {
     return (
