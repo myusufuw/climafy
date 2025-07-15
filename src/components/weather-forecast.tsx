@@ -51,9 +51,9 @@ const WeatherForecast = ({ data }: { data: ForecastData }) => {
           {fiveDayForecast.map((day) => (
             <div
               key={day.date}
-              className='grid grid-cols-3 items-center gap-4 rounded-lg border border-sidebar-border p-4 bg-white/50 dark:bg-black/10'
+              className='flex flex-wrap sm:grid grid-cols-3 items-center gap-4 rounded-lg border border-sidebar-border p-4 bg-white/50 dark:bg-black/10'
             >
-              <div>
+              <div className='min-w-[200px]'>
                 <p className='font-medium'>
                   {moment(new Date(day.date * 1000)).format('ddd, MMM DD')}
                 </p>
