@@ -1,4 +1,5 @@
 import CurrentWeather from '@/components/current-weather'
+import { FavoriteButton } from '@/components/favorite-button'
 import HourlyTemperature from '@/components/hourly-temperature'
 import WeatherSkeleton from '@/components/loading-skeleton'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -40,10 +41,15 @@ const CityDetails = () => {
 
   return (
     <div className='space-y-4'>
-      {/* FAVORITE CITIES */}
-      <h1 className='text-3xl font-bold tracking-tight'>
-        {cityName}, {wetaherData.sys.country}
-      </h1>
+      <div className='flex items-center justify-between'>
+        <h1 className='text-3xl font-bold tracking-tight'>
+          {cityName}, {wetaherData.sys.country}
+        </h1>
+
+        <div className='flex gap-2'>
+          <FavoriteButton data={{ ...wetaherData }} />
+        </div>
+      </div>
 
       {/* CONTENTS */}
       <div className='grid gap-6'>

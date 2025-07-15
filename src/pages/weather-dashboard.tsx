@@ -1,4 +1,6 @@
+import CitySearch from '@/components/city-search'
 import CurrentWeather from '@/components/current-weather'
+import { FavoriteCities } from '@/components/favorite-cities'
 import HourlyTemperature from '@/components/hourly-temperature'
 import WeatherSkeleton from '@/components/loading-skeleton'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -52,6 +54,25 @@ const WeatherDashboard = () => {
 
   if (locationLoading) return <WeatherSkeleton />
 
+  if (!coordinates) {
+    return (
+      <Alert>
+        <MapPin className='h-4 w-4' />
+        <AlertTitle>Location Required</AlertTitle>
+        <AlertDescription className='flex flex-col gap-4'>
+          <p>
+            To get the most out of this app, please enable location access in
+            your browser settings. <br />
+            If you prefer not to share your location, you can manually search
+            for your city using the Search Cities button.
+          </p>
+
+          <CitySearch />
+        </AlertDescription>
+      </Alert>
+    )
+  }
+
   if (locationError)
     return (
       <Alert variant='destructive'>
@@ -59,29 +80,17 @@ const WeatherDashboard = () => {
         <AlertTitle>Location Error</AlertTitle>
         <AlertDescription className='flex flex-col gap-4'>
           <p>{locationError}</p>
-          <Button variant='outline' onClick={getLocation} className='w-fit'>
+          <Button
+            variant='outline'
+            onClick={() => getLocation()}
+            className='w-fit'
+          >
             <MapPin className='mr-2 h-4 w-4' />
             Enable Location
           </Button>
         </AlertDescription>
       </Alert>
     )
-
-  if (!coordinates) {
-    return (
-      <Alert>
-        <MapPin className='h-4 w-4' />
-        <AlertTitle>Location Required</AlertTitle>
-        <AlertDescription className='flex flex-col gap-4'>
-          <p>Please enable location access to see your local weather.</p>
-          <Button variant='outline' onClick={getLocation} className='w-fit'>
-            <MapPin className='mr-2 h-4 w-4' />
-            Enable Location
-          </Button>
-        </AlertDescription>
-      </Alert>
-    )
-  }
 
   const locationName =
     locationData && locationData?.length > 0 ? locationData[0] : null
@@ -109,6 +118,9 @@ const WeatherDashboard = () => {
   return (
     <div className='space-y-4'>
       {/* FAVORITE CITIES */}
+      <FavoriteCities />
+
+      {/* LOCATION */}
       <div className='flex items-center justify-between'>
         <h1 className='text-xl font-bold tracking-tight'>My Location</h1>
         <Button
@@ -135,7 +147,7 @@ const WeatherDashboard = () => {
           <HourlyTemperature data={forecastData} />
         </div>
 
-        <div className='grid gap-6 md:grid-cols-2 items-start'>
+        <div className='grid gap-6 grid-cols-1 lg:grid-cols-2 items-start'>
           {/* WEATHER DETAILS */}
           <WeatherDetails data={wetaherData} />
 
